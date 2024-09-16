@@ -1,5 +1,6 @@
 import express from 'express';
 import Quiz from '../Models/Quiz';
+import cron from 'node-cron';
 
 const router = express.Router();
 
@@ -21,6 +22,10 @@ const updateQuizStatus = async () => {
     { status: 'inactive' }
   );
 };
+
+cron.schedule('* * * * *', async () => {
+  await updateQuizStatus();
+});
 
 router.post('/quiz', async (req, res) => {
   try {
